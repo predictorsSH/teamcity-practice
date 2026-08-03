@@ -1,4 +1,5 @@
 import jetbrains.buildServer.configs.kotlin.*
+import jetbrains.buildServer.configs.kotlin.buildFeatures.commitStatusPublisher
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
 
@@ -53,6 +54,19 @@ object Build : BuildType({
 
     triggers {
         vcs {
+        }
+    }
+
+    features {
+        commitStatusPublisher {
+            vcsRootExtId = "${DslContext.settingsRoot.id}"
+            publisher = github {
+                statusCheckName = "Build (my-first-pipeline)"
+                githubUrl = "https://api.github.com"
+                authType = personalToken {
+                    token = "credentialsJSON:7b061dae-56af-42f2-86d0-014b63a39d9e"
+                }
+            }
         }
     }
 })
